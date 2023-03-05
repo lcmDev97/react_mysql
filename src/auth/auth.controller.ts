@@ -1,5 +1,5 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Post } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { UserDTO } from './dto/user.dto';
 
@@ -13,10 +13,8 @@ export class AuthController {
     }
 
     @Post('/login')
-    async login(@Body() user: UserDTO, @Res() res: Response): Promise<any>{
-        const jwt = await this.authService.validateUser(user)
-        res.setHeader('Authorization', `Bearer ${jwt.accessToken}`)
-        return res.json(jwt)
+    async login(@Body() user: UserDTO): Promise<any>{
+        return await this.authService.validateUser(user)
     }
     
 }
