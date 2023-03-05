@@ -34,4 +34,8 @@ export class AuthService {
         }
     }
 
+    async tokenValidateUser(payload: Payload): Promise<UserDTO | undefined> {
+        return await this.userService.findByNickname(payload.nickname);
+    }
+
 }

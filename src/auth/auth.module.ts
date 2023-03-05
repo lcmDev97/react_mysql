@@ -6,6 +6,8 @@ import { User } from './entity/user.entity';
 import { UserService } from './user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { config }  from 'dotenv';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './security/passport.jwt.strategy';
 config()
 
 @Module({
@@ -15,9 +17,10 @@ config()
       secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: '10h' },
     }),
+    PassportModule,
 ],
   exports: [TypeOrmModule],
   controllers: [AuthController],
-  providers: [AuthService, UserService]
+  providers: [AuthService, UserService, JwtStrategy]
 })
 export class AuthModule {}
