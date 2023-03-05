@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
+const bcrypt = require("bcrypt");
 let AuthService = class AuthService {
     constructor(userService) {
         this.userService = userService;
@@ -24,11 +25,12 @@ let AuthService = class AuthService {
         return this.userService.save(newUser);
     }
     async validateUser(user) {
-        let foundUser = await this.userService.findByNickname(user.nickname);
-        if (!foundUser || user.password !== foundUser.password) {
+        const foundUser = await this.userService.findByNickname(user.nickname);
+        const comparePassword = await bcrypt.compare(user.password, foundUser.password);
+        if (!foundUser || !comparePassword) {
             throw new common_1.HttpException("아이디 또는 비밀번호를 확인해 주세요.", 400);
         }
-        return foundUser;
+        return "Login Success";
     }
 };
 AuthService = __decorate([

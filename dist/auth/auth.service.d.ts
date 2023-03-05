@@ -4,5 +4,5 @@ export declare class AuthService {
     private userService;
     constructor(userService: UserService);
     registerNewUser(newUser: UserDTO): Promise<UserDTO>;
-    validateUser(user: UserDTO): Promise<UserDTO>;
+    validateUser(user: UserDTO): Promise<string>;
 }

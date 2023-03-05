@@ -5,5 +5,6 @@ export declare class UserService {
     private userRepository;
     constructor(userRepository: Repository<User>);
     findByNickname(nickname: string): Promise<UserDTO>;
+    encryptPssword(user: UserDTO): Promise<void>;
     save(newUser: UserDTO): Promise<UserDTO | undefined>;
 }
