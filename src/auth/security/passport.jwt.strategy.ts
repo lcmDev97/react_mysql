@@ -16,12 +16,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: Payload, done: VerifiedCallback): Promise<any> {
-        const user = await this.authService.tokenValidateUser(payload);
-        if (!user) {
-            return done(new UnauthorizedException({ message: 'user does not exist' }), false);
-        }
-
-        return done(null, user);
+        const foundUser = await this.authService.tokenValidateUser(payload);
+        if (!foundUser) {
+            throw new HttpException("올바르지 않은 권한입니다. 재 로그인후 다시 시도해주세요.", 401)
+        };
+        return done(null, foundUser);
     }
 
 }

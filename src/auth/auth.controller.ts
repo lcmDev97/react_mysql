@@ -16,8 +16,14 @@ export class AuthController {
     @Post('/login')
     async login(@Body() user: UserDTO, @Res() res: Response): Promise<any>{
         const jwt = await this.authService.validateUser(user)
-        res.setHeader('Authorization', `Bearer ${jwt.accessToken}`)
-        return res.json(jwt)
+        // res.setHeader('Authorization', `Bearer ${jwt.accessToken}`)
+        res.cookie('jwt', jwt.accessToken, {
+            httpOnly: true,
+            maxAge: 10 * 60 * 60 * 1000
+        })
+        return res.json({
+            message: 'suceess'
+        })
     }
 
     @Get('/testauth')
@@ -27,5 +33,20 @@ export class AuthController {
         return user;
     }
     
+    @Get('/cookie')
+    getCookie(@Req() req: Request, @Res() res: Response): any {
+        const jwtInCookie = req.cookies['jwt']
+        return res.json(jwtInCookie)
+    }
+
+    @Post('/logout')
+    logout(@Res() res: Response): any {
+        res.cookie('jwt', '', {
+            maxAge: 0
+        })
+        return res.json({
+            message: 'Successfully Logout.'
+        })
+    }
 
 }
