@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
+import { Response } from 'express';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return `now, ${process.env.SERVER_MODE} mode`;
+  getHello(@Res() res: Response): any {
+    return `now, ${process.env.SERVER_MODE} mode`
   }
 }
