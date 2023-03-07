@@ -15,6 +15,7 @@ export class AuthController {
 
     @Post('/login')
     async login(@Body() user: UserDTO, @Res() res: Response): Promise<any>{
+        console.log('서버 body값 정보',user)
         const jwt = await this.authService.validateUser(user)
         // res.setHeader('Authorization', `Bearer ${jwt.accessToken}`)
         res.cookie('jwt', jwt.accessToken, {
@@ -22,7 +23,7 @@ export class AuthController {
             maxAge: 10 * 60 * 60 * 1000
         })
         return res.json({
-            message: 'suceess'
+            message: 'success'
         })
     }
 
