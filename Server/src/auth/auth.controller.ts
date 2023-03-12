@@ -1,12 +1,19 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+import { Roles } from './decorator/role.decorator';
 import { UserDTO } from './dto/user.dto';
+import { RoleType } from './role-type';
+import { RolesGuard } from './security/roles.guard';
+import { UserService } from './user.service';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService) {}
+    constructor(
+        private authService: AuthService,
+        private userService: UserService,
+        ) {}
 
     @Post('/register')
     async registerNewUser(@Body() newUser: UserDTO): Promise<any> {
@@ -48,6 +55,21 @@ export class AuthController {
         return res.json({
             message: 'Successfully Logout.'
         })
+    }
+
+    @Get('/admin-role')
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(RoleType.ADMIN)
+    adminRole(@Req() req: Request): any {
+        const user: any = req.user;
+        return user;
+    }
+
+    @Delete('/user')
+    @UseGuards(AuthGuard('jwt'))
+    async deleteUser(@Req() req: Request): Promise<any> {
+        const user: any = req.user;
+        return await this.userService.deleteUserTransaction(user)
     }
 
 }

@@ -3,8 +3,8 @@ import { UserDTO } from './dto/user.dto';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt'
 import { Payload } from './security/payload.interface';
-import { LineString } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { User } from './entity/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +27,12 @@ export class AuthService {
         if(!foundUser || !comparePassword){
             throw new HttpException("아이디 또는 비밀번호를 확인해 주세요.", 400)
         }
-        const payload: Payload = { id: foundUser.id, nickname: foundUser.nickname }
+        this.convertInAuthorities(foundUser)
+        const payload: Payload = {
+            id: foundUser.id,
+            nickname: foundUser.nickname,
+            authorities: foundUser.authorities
+        }
 
         return {
             accessToken: this.jwtService.sign(payload)
@@ -35,7 +40,28 @@ export class AuthService {
     }
 
     async tokenValidateUser(payload: Payload): Promise<UserDTO | undefined> {
-        return await this.userService.findByNickname(payload.nickname);
+        const FoundUser = await this.userService.findByNickname(payload.nickname);
+        this.flatAuthorities(FoundUser)
+        return FoundUser
+    }
+    
+    private convertInAuthorities(user: any): User {
+        if (user && user.authorities) {
+            const authorities: any[] = [];
+            user.authorities.forEach(authority => authorities.push({ name: authority.authorityName }));//푸쉬할떄, json값으로 push
+            user.authorities = authorities;
+        }
+        return user;
     }
 
+    private flatAuthorities(user: any): User {
+        if (user && user.authorities) {
+            const authorities: string[] = [];
+            user.authorities.forEach(authority => authorities.push(authority.authorityName)); //이건 값만 push
+            user.authorities = authorities;
+        }
+        return user;
+    }
+
+    
 }

@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entity/user.entity';
+import { UserAuthority } from './auth/entity/user-authority.entity';
 config()
 
 let syncBoolean = process.env.SERVER_MODE === 'dev' ? true : false
@@ -21,8 +22,9 @@ let syncBoolean = process.env.SERVER_MODE === 'dev' ? true : false
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User],
-      synchronize: syncBoolean,
+      entities: [User, UserAuthority],
+      synchronize: false, //!user_authority tabble에 기본 데이터 넣어져있으므로,개발단계에세도 false로 두기.
+      logging: syncBoolean
     }),
     AuthModule,
   ],
