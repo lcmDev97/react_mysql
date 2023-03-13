@@ -47,13 +47,17 @@ export class AuthController {
         return res.json(jwtInCookie)
     }
 
-    @Post('/logout')
+    @Get('/logout')
     logout(@Res() res: Response): any {
         res.cookie('jwt', '', {
             maxAge: 0
         })
+        res.cookie('isLogin', '', {
+            maxAge: 0
+        })
         return res.json({
-            message: 'Successfully Logout.'
+            success: true,
+            message: "로그아웃 하였습니다."
         })
     }
 
