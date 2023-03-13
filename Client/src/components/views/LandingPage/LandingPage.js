@@ -21,23 +21,17 @@ export default function LandingPage() {
       alert("로그아웃에 실패했습니다.")
     })
     .finally(()=>{
-      navigate('/')
+      navigate('/login')
     })
   }
   
-  const getJwtValue = ()=>{
-    let cookies = document.cookie.split(";")
-    cookies.map((v)=>{
-      let [name, value] = v.split("=")
-      if(name === " jwt"){
-        console.log(value)
-      }
-    })
-  
-  }
 
    const goLoginPage = ()=>{
     navigate('/login')
+   }
+
+   const onlyAdmin = ()=>{
+    axios.get('http://localhost:8000/auth/admin-role', { withCredentials: true })
    }
 
     // axios.get('http://localhost:8000/auth/testauth',{
@@ -59,7 +53,7 @@ export default function LandingPage() {
 
     <button onClick={onClickHandler}>로그아웃</button>
     <button onClick={goLoginPage}>Login</button>
-    <button onClick={getJwtValue}>testButton</button>
+    <button onClick={onlyAdmin}>testButton</button>
 
     </div>
   )

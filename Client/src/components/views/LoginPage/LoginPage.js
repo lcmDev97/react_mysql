@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from "../../../_actions/user_action";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 export default function LoginPage(props) {
   const dispatch = useDispatch()
@@ -34,7 +35,7 @@ export default function LoginPage(props) {
     
 
     dispatch(loginUser(body)).then((response)=>{
-      console.log("dispatch의 response.payload.message", response.payload.message)
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.payload.accessToken}`
       if(response.payload.message === "success"){
         document.cookie = "isLogin=true"
         navigate('/')
