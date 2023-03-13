@@ -13,7 +13,7 @@ export default function LandingPage() {
   }, [])
 
   const onClickHandler = ()=>{
-    axios.post('http://localhost:8000/auth/logout', { withCredentials: true })
+    axios.get('http://localhost:8000/auth/logout', { withCredentials: true })
     .then(response => {
       console.log(response.data)
     })
@@ -21,7 +21,7 @@ export default function LandingPage() {
       alert("로그아웃에 실패했습니다.")
     })
     .finally(()=>{
-      navigate('/login')
+      navigate('/')
     })
   }
   
