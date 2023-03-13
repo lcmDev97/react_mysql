@@ -30,13 +30,15 @@ export class AuthController {
             maxAge: 10 * 60 * 60 * 1000
         })
         return res.json({
-            message: 'success'
+            accessToken: jwt.accessToken,
+            message: "success"
         })
     }
 
     @Get('/testauth')
     @UseGuards(AuthGuard('jwt'))
     isAuthenticated(@Req() req: Request): any { 
+        console.log("req.user정보",req.user)
         const user: any = req.user;
         return user;
     }
