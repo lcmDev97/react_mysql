@@ -4,7 +4,7 @@ import { auth } from '../_actions/user_action'
 import { useNavigate } from "react-router-dom";
 
 export default function (SpecificComponent, option, adminRoute = null) {
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const dispatch = useDispatch() //2. 일로 옮김
     function AuthenticationCheck(props) {
         //1. 원래 useDispatch위치 여기있었는데
