@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { Roles } from './decorator/role.decorator';
 import { UserDTO } from './dto/user.dto';
 import { RoleType } from './role-type';
+import { AuthGuard } from './security/auth.guard';
 import { RolesGuard } from './security/roles.guard';
 import { UserService } from './user.service';
 
@@ -36,11 +36,11 @@ export class AuthController {
     }
 
     @Get('/testauth')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard)
     isAuthenticated(@Req() req: Request): any { 
         console.log("req.user정보",req.user)
         const user: any = req.user;
-        return user;
+        return "loginState: ture";
     }
     
     @Get('/cookie')
@@ -64,7 +64,7 @@ export class AuthController {
     }
 
     @Get('/admin-role')
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @UseGuards(AuthGuard, RolesGuard)
     @Roles(RoleType.ADMIN)
     adminRole(@Req() req: Request): any {
         const user: any = req.user;
@@ -72,7 +72,7 @@ export class AuthController {
     }
 
     @Delete('/user')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard)
     async deleteUser(@Req() req: Request): Promise<any> {
         const user: any = req.user;
         return await this.userService.deleteUserTransaction(user)

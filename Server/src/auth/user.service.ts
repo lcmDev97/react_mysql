@@ -5,6 +5,7 @@ import { UserDTO } from "./dto/user.dto";
 import { User } from "./entity/user.entity";
 import * as bcrypt from 'bcrypt'
 import { UserAuthority } from "./entity/user-authority.entity";
+import { RoleType } from "./role-type";
 
 @Injectable()
 export class UserService{
@@ -13,7 +14,9 @@ export class UserService{
         @InjectRepository(UserAuthority) private userAuthority: Repository<UserAuthority>,
         private dataSource: DataSource,
         ) {}
-
+        async saveAuthority(data) {
+            return await this.userAuthority.save(data)
+        }
         async findByNickname(nickname: string): Promise<UserDTO> {
             return await this.userRepository.findOne({where: {nickname}})
         }
@@ -24,7 +27,12 @@ export class UserService{
 
         async save(newUser: UserDTO): Promise<UserDTO | undefined> {
             await this.encryptPssword(newUser)
-            return await this.userRepository.save(newUser)
+            await this.userRepository.save(newUser)
+            let foundUserId = await (await this.userRepository.findOne({where: {nickname: newUser.nickname}})).id
+            return await this.saveAuthority({
+                userId: foundUserId,
+                authorityName: "ROLE_USER"
+            })
         }
 
         async deleteUser(user: User): Promise<any>{
