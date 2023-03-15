@@ -39,7 +39,8 @@ export default function LoginPage(props) {
 
     dispatch(loginUser(body)).then((response)=>{
       // axios.defaults.headers.common['Authorization'] = `Bearer ${response.payload.accessToken}`
-      if(response.payload.message === "success"){
+      if(response.payload.success === true){
+        console.log(response)
         document.cookie = "isLogin=true"
         navigate('/')
       } else {

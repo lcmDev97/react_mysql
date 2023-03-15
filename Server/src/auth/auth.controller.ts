@@ -30,7 +30,9 @@ export class AuthController {
             maxAge: 10 * 60 * 60 * 1000
         })
         return res.json({
-            message: "success"
+            success: true,
+            userId: user.id,
+            message: "로그인 성공"
         })
     }
 
