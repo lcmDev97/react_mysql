@@ -7,9 +7,12 @@ import axios from 'axios';
 export default function LoginPage(props) {
   const dispatch = useDispatch()
 
-  const goRegisterPage = ()=>{
+  const goRegisterPage = () => {
     return navigate('/register')
    }
+  const goLandingPage = () => {
+    return navigate('/')
+  }
 
   const [Nickname, setNickname] = useState("")
   const [Password, setPassword] = useState("")
@@ -64,6 +67,9 @@ export default function LoginPage(props) {
         </button>
         <button onClick={goRegisterPage}>
           Register
+        </button>
+        <button onClick={goLandingPage}>
+          Home
         </button>
       </form>
     </div>

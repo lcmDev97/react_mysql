@@ -32,6 +32,12 @@ export default function LandingPage() {
 
    const onlyAdmin = ()=>{
     axios.get('http://localhost:8000/auth/admin-role', { withCredentials: true })
+    .then(res=>{
+      alert('admin님 어서옵쇼.')
+    })
+    .catch(res=>{
+      alert('admin이 아닙니다.')
+    })
    }
 
     // axios.get('http://localhost:8000/auth/testauth',{
@@ -53,7 +59,7 @@ export default function LandingPage() {
 
     <button onClick={onClickHandler}>로그아웃</button>
     <button onClick={goLoginPage}>Login</button>
-    <button onClick={onlyAdmin}>testButton</button>
+    <button onClick={onlyAdmin}>adminCheckBut</button>
 
     </div>
   )

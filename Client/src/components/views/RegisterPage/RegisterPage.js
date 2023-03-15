@@ -10,6 +10,9 @@ export default function RegisterPage() {
   const [Password, setPassword] = useState("")
   const [ConfirmPassword, setConfirmPassword] = useState("")
   const navigate = useNavigate()
+  const goLandingPage = () => {
+    return navigate('/')
+  }
 
   const onNicknameHandler = (event)=>{
     setNickname(event.currentTarget.value)
@@ -63,6 +66,9 @@ export default function RegisterPage() {
         <br />
         <button>
           회원 가입
+        </button>
+        <button onClick={goLandingPage}>
+          Home
         </button>
       </form>
     </div>
