@@ -24,7 +24,7 @@ let syncBoolean = process.env.SERVER_MODE === 'dev' ? true : false
       database: process.env.DB_DATABASE,
       entities: [User, UserAuthority],
       synchronize: false, //!user_authority tabble에 기본 데이터 넣어져있으므로,개발단계에세도 false로 두기.
-      logging: syncBoolean
+      logging: false, // DB관련없는 작업의 log찍기위해 잠시 꺼둠. syncBoolean
     }),
     AuthModule,
   ],
