@@ -64,6 +64,9 @@ export class UserService{
                 await queryRunner.rollbackTransaction();//실패시 rollback
             } finally {
                 await queryRunner.release(); //release
+                return {
+                    message: "사용자 정보가 정상적으로 삭제되었습니다."
+                }
             }
         }
         

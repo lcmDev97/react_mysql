@@ -3,7 +3,7 @@ import { Response } from 'express';
 
 @Injectable()
 export class AppService {
-  getHello(@Res() res: Response): any {
-    return `now, ${process.env.SERVER_MODE} mode`
-  }
+  // getHello(@Res() res: Response): any {
+  //   return `now, ${process.env.SERVER_MODE} mode`
+  // }
 }

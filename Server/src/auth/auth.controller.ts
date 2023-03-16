@@ -60,7 +60,9 @@ export class AuthController {
         })
         return res.json({
             success: true,
+            data: {
             message: "로그아웃 하였습니다."
+            }
         })
     }
 
