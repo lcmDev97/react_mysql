@@ -7,9 +7,9 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(@Res() res: Response): any {
-    return res.json({
-      message: "hi, react!!"
-    })
+  getHello(): any {
+    return {
+      message: "hi, react!"
+    }
   }
 }

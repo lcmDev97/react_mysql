@@ -23,10 +23,15 @@ export class AuthService {
 
     async validateUser(user: UserDTO): Promise<{accessToken: string}> {
         const foundUser = await this.userService.findByNickname(user.nickname)
-        const comparePassword = await bcrypt.compare(user.password, foundUser.password)
-        if(!foundUser || !comparePassword){
+        if(!foundUser){
             throw new HttpException("아이디 또는 비밀번호를 확인해 주세요.", 400)
         }
+
+        const comparePassword = await bcrypt.compare(user.password, foundUser.password)
+        if(!comparePassword){
+            throw new HttpException("아이디 또는 비밀번호를 확인해 주세요.", 400)
+        }
+        
         this.convertInAuthorities(foundUser)
         const payload: Payload = {
             id: foundUser.id,
